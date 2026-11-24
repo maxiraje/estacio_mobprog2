@@ -7,16 +7,33 @@ class NewsfeedCard extends StatelessWidget {
   final String userName;
   final String postContent;
   final String date;
+  final int? postNumber;
   final int? numOfLikes;
+  final int? numOfComments;
+  final int? numOfShares;
   final bool? hasImage;
+  final bool? hasPlaceholder;
+  final String? imageUrl;
+  final bool? hasSecondaryImage;
+  final String? secondaryImageUrl;
+
+  static const String _defaultFlowerUrl =
+      'https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=800&q=80';
 
   const NewsfeedCard({
     super.key,
     required this.userName,
     required this.postContent,
     required this.date,
+    this.postNumber,
     this.numOfLikes,
+    this.numOfComments,
+    this.numOfShares,
     this.hasImage,
+    this.hasPlaceholder,
+    this.imageUrl,
+    this.hasSecondaryImage,
+    this.secondaryImageUrl,
   });
 
   @override
@@ -41,11 +58,24 @@ class NewsfeedCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomText(
-                      text: userName,
-                      fontSize: screenUtilFontUserNameSize,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
+                    Row(
+                      children: [
+                        CustomText(
+                          text: userName,
+                          fontSize: screenUtilFontUserNameSize,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        if (postNumber != null) ...[
+                          SizedBox(width: ScreenUtil().setWidth(6)),
+                          CustomText(
+                            text: '#$postNumber',
+                            fontSize: ScreenUtil().setSp(12),
+                            color: fbPrimary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ],
+                      ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -77,9 +107,42 @@ class NewsfeedCard extends StatelessWidget {
               color: Colors.black,
             ),
             SizedBox(height: ScreenUtil().setHeight(5)),
-            hasImage == true
-                ? const Image(image: AssetImage('assets/images/iron_man.jpg'))
-                : const SizedBox.shrink(),
+            if (hasPlaceholder == true) ...[
+              Container(
+                height: ScreenUtil().setHeight(150),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(ScreenUtil().setSp(8)),
+                  ),
+                ),
+                alignment: Alignment.center,
+                child: CustomText(
+                  text: 'Post Placeholder',
+                  fontSize: ScreenUtil().setSp(12),
+                  color: Colors.grey[700] ?? Colors.grey,
+                ),
+              ),
+              SizedBox(height: ScreenUtil().setHeight(5)),
+            ],
+            if (hasImage == true) ...[
+              Image(
+                image: NetworkImage(
+                  imageUrl ??
+                      'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
+                ),
+              ),
+              SizedBox(height: ScreenUtil().setHeight(5)),
+            ],
+            if (hasSecondaryImage == true) ...[
+              Image(
+                image: NetworkImage(
+                  secondaryImageUrl ?? _defaultFlowerUrl,
+                ),
+              ),
+              SizedBox(height: ScreenUtil().setHeight(5)),
+            ],
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -87,13 +150,13 @@ class NewsfeedCard extends StatelessWidget {
                   onPressed: () {},
                   icon: const Icon(Icons.thumb_up, color: fbPrimary),
                   label: CustomText(
-                    text: numOfLikes.toString(),
+                    text: (numOfLikes ?? 0).toString(),
                     fontSize: ScreenUtil().setSp(12),
                     color: fbDarkPrimary,
                   ),
                 ),
                 CustomText(
-                  text: 'Comment',
+                  text: 'Comment (${numOfComments ?? 0})',
                   fontSize: ScreenUtil().setSp(12),
                   color: fbDarkPrimary,
                 ),
@@ -101,7 +164,7 @@ class NewsfeedCard extends StatelessWidget {
                   onPressed: () {},
                   icon: const Icon(Icons.redo, color: fbDarkPrimary),
                   label: CustomText(
-                    text: 'Share',
+                    text: 'Share (${numOfShares ?? 0})',
                     fontSize: ScreenUtil().setSp(12),
                     color: fbDarkPrimary,
                   ),
@@ -138,7 +201,7 @@ class NewsfeedCard extends StatelessWidget {
             ),
             SizedBox(height: ScreenUtil().setHeight(10)),
             CustomText(
-              text: 'View all comments',
+              text: 'View all comments (${numOfComments ?? 0})',
               fontSize: ScreenUtil().setSp(12),
               fontWeight: FontWeight.bold,
               color: Colors.black,

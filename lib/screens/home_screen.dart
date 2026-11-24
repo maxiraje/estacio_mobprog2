@@ -1,3 +1,4 @@
+import 'package:estacio_mobprog1/screens/notification_screen.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:estacio_mobprog1/constant.dart';
@@ -15,6 +16,13 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
   final PageController _pageController = PageController();
 
+  final List<String> _titles = [
+    'ShinSocial',
+    'Notifications',
+    'Friends',
+    'Profile',
+  ];
+
   @override
   void dispose() {
     _pageController.dispose();
@@ -28,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
         shadowColor: fbTextColorWhite,
         elevation: 2,
         title: CustomText(
-          text: 'Facebook',
+          text: _titles[_selectedIndex],
           fontSize: ScreenUtil().setSp(25),
           color: fbPrimary,
           fontFamily: 'Klavika',
@@ -37,7 +45,12 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: PageView(
         controller: _pageController,
-        children: const <Widget>[NewsfeedScreen()],
+        children: const <Widget>[
+          NewsfeedScreen(),
+          NotificationScreen(),
+          Center(child: Text('Friends Screen')),
+          Center(child: Text('Profile Screen')),
+        ],
         onPageChanged: (page) {
           setState(() {
             _selectedIndex = page;
@@ -45,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         showUnselectedLabels: false,
         showSelectedLabels: false,
         onTap: _onTappedBar,
@@ -54,8 +68,11 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(Icons.notifications),
             label: 'Notifications',
           ),
+          BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Friends'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
         selectedItemColor: fbPrimary,
+        unselectedItemColor: Colors.grey,
         currentIndex: _selectedIndex,
       ),
     );
