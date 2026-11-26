@@ -1,3 +1,4 @@
+import 'package:estacio_mobprog1/screens/notification_screen.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:estacio_mobprog1/screens/home_screen.dart';
@@ -24,6 +25,8 @@ class MainApp extends StatelessWidget {
           routes: {
             "/newsfeed": (context) => const NewsfeedScreen(),
             "/home": (context) => const HomeScreen(),
+            "/notification" : (context) => const NotificationScreen(),
+            
           },
         );
       },
