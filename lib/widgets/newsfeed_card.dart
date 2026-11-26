@@ -6,20 +6,19 @@ class NewsfeedCard extends StatefulWidget {
   final String userName;
   final String postContent;
   final String date;
+  final int? postNumber;
   final int? numOfLikes;
+  final int? numOfComments;
+  final int? numOfShares;
   final bool? hasImage;
-  final String? postImagePath;
-  final String? avatarPath;
 
   const NewsfeedCard({
     super.key,
     required this.userName,
     required this.postContent,
     required this.date,
-    this.numOfLikes = 0,
-    this.hasImage = false,
-    this.postImagePath,
-    this.avatarPath,
+    this.numOfLikes,
+    this.hasImage,
   });
 
   @override
@@ -97,8 +96,8 @@ class _NewsfeedCardState extends State<NewsfeedCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomText(
-                      text: widget.userName,
-                      fontSize: 14.sp,
+                      text: userName,
+                      fontSize: screenUtilFontUserNameSize,
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                     ),
@@ -120,24 +119,39 @@ class _NewsfeedCardState extends State<NewsfeedCard> {
             _buildPostImage(),
             SizedBox(height: 8.h),
             CustomText(
-              text: '$likesCount likes',
-              fontSize: 12.sp,
-              color: Colors.grey[700] ?? Colors.grey,
+              text: postContent,
+              fontSize: ScreenUtil().setSp(12),
+              color: Colors.black,
             ),
-            const Divider(),
+            SizedBox(height: ScreenUtil().setHeight(5)),
+            hasImage == true
+                ? const Image(image: AssetImage('assets/images/iron_man.jpg'))
+                : const SizedBox.shrink(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _ActionButton(
-                  icon: isLiked ? Icons.thumb_up : Icons.thumb_up_outlined,
-                  label: 'Like',
-                  isActive: isLiked,
-                  onTap: _toggleLike,
+                TextButton.icon(
+                  onPressed: () {},
+                  icon: const Icon(Icons.thumb_up, color: fbPrimary),
+                  label: CustomText(
+                    text: numOfLikes.toString(),
+                    fontSize: ScreenUtil().setSp(12),
+                    color: fbDarkPrimary,
+                  ),
                 ),
-                _ActionButton(
-                  icon: Icons.comment_outlined,
-                  label: 'Comment',
-                  onTap: () {},
+                CustomText(
+                  text: 'Comment',
+                  fontSize: ScreenUtil().setSp(12),
+                  color: fbDarkPrimary,
+                ),
+                TextButton.icon(
+                  onPressed: () {},
+                  icon: const Icon(Icons.redo, color: fbDarkPrimary),
+                  label: CustomText(
+                    text: 'Share',
+                    fontSize: ScreenUtil().setSp(12),
+                    color: fbDarkPrimary,
+                  ),
                 ),
               ],
             ),
@@ -175,10 +189,10 @@ class _ActionButton extends StatelessWidget {
             Icon(icon, size: 18.sp, color: activeColor),
             SizedBox(width: 6.w),
             CustomText(
-              text: label,
-              fontSize: 13.sp,
-              color: activeColor,
-              fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+              text: 'View all comments',
+              fontSize: ScreenUtil().setSp(12),
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
             ),
           ],
         ),
