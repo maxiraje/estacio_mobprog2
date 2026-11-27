@@ -40,6 +40,17 @@ class NewsfeedScreen extends StatelessWidget {
           numOfShares: 0,
           hasImage: false,
         ),
+        NewsfeedCard(
+          userName: 'Alex Cruz',
+          postContent: '#LSS A song of the day: "Alice" by GDEE. Such a great song!',
+          date: 'Just Now',
+          numOfLikes: 18,
+          numOfComments: 4,
+          numOfShares: 0,
+          hasImage: true,
+          imageUrl:
+              'https://th.bing.com/th/id/OIP.X5fuib-V5194_Uats-QhdwHaD4?w=308&h=180&c=7&r=0&o=7&pid=1.7&rm=3',
+        ),
       ],
     );
   }
