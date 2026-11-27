@@ -31,6 +31,24 @@ class NewsfeedCard extends StatelessWidget {
     this.secondaryImageUrl,
   });
 
+  Widget _buildPostImage(String? path, {bool enabled = true}) {
+    if (!enabled || path == null || path.isEmpty) {
+      return const SizedBox.shrink();
+    } else if (path.startsWith('http')) {
+      return Image.network(
+        path,
+        width: double.infinity,
+        fit: BoxFit.cover,
+      );
+    } else {
+      return Image.asset(
+        path,
+        width: double.infinity,
+        fit: BoxFit.cover,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenUtilSp = ScreenUtil().setSp(10);
@@ -108,24 +126,14 @@ class NewsfeedCard extends StatelessWidget {
               ),
               SizedBox(height: ScreenUtil().setHeight(5)),
             ],
-            if (hasImage == true &&
-                imageUrl != null &&
-                imageUrl!.isNotEmpty) ...[
-              Image.network(
-                imageUrl!,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
+            if (hasImage == true && imageUrl != null && imageUrl!.isNotEmpty) ...[
+              _buildPostImage(imageUrl, enabled: true),
               SizedBox(height: ScreenUtil().setHeight(5)),
             ],
             if (hasSecondaryImage == true &&
                 secondaryImageUrl != null &&
                 secondaryImageUrl!.isNotEmpty) ...[
-              Image.network(
-                secondaryImageUrl!,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
+              _buildPostImage(secondaryImageUrl, enabled: true),
               SizedBox(height: ScreenUtil().setHeight(5)),
             ],
             Row(
